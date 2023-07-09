@@ -1,0 +1,16 @@
+version: "2.1"
+services:
+  sickgear:
+    image: lscr.io/linuxserver/sickgear:latest
+    container_name: sickgear
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+    volumes:
+      - /media/redacerubuntu/files/docker/sickgear/config:/config
+      - /media/redacerubuntu/files/docker/sickgear/tv:/tv
+      - /media/redacerubuntu/files/docker/sickgear/downloads:/downloads
+    ports:
+      - 5050:8081
+    restart: unless-stopped

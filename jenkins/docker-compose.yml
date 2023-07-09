@@ -1,0 +1,10 @@
+services:
+  jenkins:
+    container_name: jenkins
+    image: jenkins/jenkins:lts-jdk11
+    restart: always
+    volumes:
+        - /media/redacerubuntu/files/docker/jenkins/jenkins_home:/var/jenkins_home
+    ports:
+        - "4000:8080" 
+        - "4001:50000"

@@ -1,0 +1,24 @@
+version: "2.1"
+services:
+  emulatorjs:
+    image: lscr.io/linuxserver/emulatorjs:latest
+    container_name: emulatorjs
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+      - SUBFOLDER=/ #optional
+    volumes:
+      - /media/redacerubuntu/files/docker/emulatorjs/config:/config
+      - /media/redacerubuntu/files/docker/emulatorjs/data:/data
+      - /media/redacerubuntu/files/downloads/ftp_roms2/Europe_en/No-Intro/Nintendo - Nintendo Entertainment System (Headered):/data/nes/roms
+      - /media/redacerubuntu/files/downloads/ftp_roms2/Europe_en/No-Intro/Nintendo - Game Boy:/data/gb/roms
+      - /media/redacerubuntu/files/downloads/ftp_roms2/Europe_en/No-Intro/Nintendo - Game Boy Color:/data/gbc/roms
+      - /media/redacerubuntu/files/downloads/ftp_roms2/Europe_en/No-Intro/Nintendo - Game Boy Advance:/data/gba/roms
+      - /media/redacerubuntu/files/downloads/ftp_roms2/Europe_en/No-Intro/Nintendo - Nintendo DS (Decrypted):/data/nds/roms
+      - /media/redacerubuntu/files/downloads/ftp_roms2/Europe_en/No-Intro/Nintendo - Super Nintendo Entertainment System:/data/snes/roms
+    ports:
+      - 5010:80
+      - 5011:3000
+      - 5012:4001 #optional
+    restart: unless-stopped

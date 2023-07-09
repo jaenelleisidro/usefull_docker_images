@@ -1,0 +1,19 @@
+version: "2.1"
+services:
+  plex:
+    image: lscr.io/linuxserver/plex:latest
+    container_name: plex
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+      - VERSION=docker
+      - PLEX_CLAIM= #optional
+    volumes:
+      - /media/redacerubuntu/files/docker/plex/config:/config
+      - /media/redacerubuntu/files/docker/plex/tv:/tv
+      - /media/redacerubuntu/files/docker/plex/movies:/movies
+    restart: unless-stopped   
+    ports:
+        - "5030:8080"
+        - "5031:32400"

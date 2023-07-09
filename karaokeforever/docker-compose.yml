@@ -1,0 +1,10 @@
+version: "2.1"
+services:
+  karaokeforever:
+    image: david510c/karaoke-forever:latest
+    container_name: karaokeforever
+    volumes:
+      - /media/redacerubuntu/files/docker/karaokeforever/cdgfiles:/cdgfiles
+    ports:
+      - 5020:80
+    restart: unless-stopped

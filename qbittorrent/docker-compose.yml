@@ -1,0 +1,18 @@
+version: "2.1"
+services:
+  qbittorrent:
+    image: lscr.io/linuxserver/qbittorrent:latest
+    container_name: qbittorrent
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+      - WEBUI_PORT=5040
+    volumes:
+      - /media/redacerubuntu/files/docker/qbittorrent/config:/config
+      - /media/redacerubuntu/files/docker/qbittorrent/downloads:/downloads
+    ports:
+      - 5040:5040
+      - 5041:6881
+      - 5042:6881/udp
+    restart: unless-stopped
