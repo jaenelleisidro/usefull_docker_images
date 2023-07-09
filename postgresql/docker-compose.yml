@@ -1,0 +1,23 @@
+# Use postgres/test101 as user/password credentials
+version: '3.1'
+
+services:
+
+  postgres:
+    image: postgres
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_PASSWORD: test101
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - postgresql-datavolume:/var/lib/postgresql/data
+    networks:
+    - shared-net
+networks:
+  shared-net:
+    external: true
+#docker network create shared-net
+volumes:
+  postgresql-datavolume:

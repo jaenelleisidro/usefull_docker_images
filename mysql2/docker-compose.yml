@@ -14,7 +14,11 @@ services:
       MYSQL_ROOT_PASSWORD: test101
     volumes:
       - mysql-datavolume:/var/lib/mysql
-    container_name: mysql
-    hostname: mysql
+    networks:
+    - shared-net
+networks:
+  shared-net:
+    external: true
+#docker network create shared-net
 volumes:
   mysql-datavolume:
