@@ -8,3 +8,9 @@ services:
     ports:
       - 5020:80
     restart: unless-stopped
+    networks:
+    - shared-net
+networks:
+  shared-net:
+    external: true
+#docker network create shared-net

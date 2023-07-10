@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  nginx:
+    image: nginx
+    ports:
+        - "80:80" 
+    volumes:
+      - ./conf.d:/etc/nginx/conf.d
+    networks:
+    - shared-net
+networks:
+  shared-net:
+    external: true
+#docker network create shared-net

@@ -1,8 +1,7 @@
 version: "2.1"
 services:
-  calibre-web:
+  calibre:
     image: lscr.io/linuxserver/calibre-web:latest
-    container_name: calibre-web
     environment:
       - PUID=1000
       - PGID=1000
@@ -15,3 +14,9 @@ services:
     ports:
       - 5000:8083
     restart: unless-stopped
+    networks:
+    - shared-net
+networks:
+  shared-net:
+    external: true
+#docker network create shared-net

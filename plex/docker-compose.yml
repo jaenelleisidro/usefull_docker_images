@@ -17,3 +17,9 @@ services:
     ports:
         - "5030:8080"
         - "5031:32400"
+    networks:
+    - shared-net
+networks:
+  shared-net:
+    external: true
+#docker network create shared-net

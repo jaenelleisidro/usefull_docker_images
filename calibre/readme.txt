@@ -4,3 +4,5 @@ https://github.com/linuxserver/docker-calibre-web
 
 requires metadb from calibre app in order to work
 https://github.com/linuxserver/docker-calibre-web/issues/30
+
+(username:admin password:admin123)
