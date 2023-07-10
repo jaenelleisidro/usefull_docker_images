@@ -22,3 +22,9 @@ services:
       - 5011:3000
       - 5012:4001 #optional
     restart: unless-stopped
+    networks:
+    - shared-net
+networks:
+  shared-net:
+    external: true
+#docker network create shared-net
