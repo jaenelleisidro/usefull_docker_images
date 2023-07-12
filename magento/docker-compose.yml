@@ -1,0 +1,23 @@
+services:
+  magento:
+    image: bitnami/magento:latest
+    container_name: magento
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+      - MAGENTO_DATABASE_USER=bn_magento
+      - MAGENTO_DATABASE_PASSWORD=bitnami
+      - MAGENTO_DATABASE_NAME=bitnami_magento
+    volumes:
+      - magento-volume:/bitnami/magento
+    ports:
+      - 5090:8080
+      - 8443:8443
+    restart: unless-stopped
+    networks:
+    - shared-net
+networks:
+  shared-net:
+    external: true
+#docker network create shared-network
+volumes:
+  shared-volume:
