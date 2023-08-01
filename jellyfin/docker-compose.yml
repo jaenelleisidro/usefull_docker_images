@@ -9,9 +9,19 @@ services:
       - TZ=Etc/UTC
       - JELLYFIN_PublishedServerUrl=192.168.0.5 #optional
     volumes:
-      - /media/redacerubuntu/files/docker/jellyfin/config:/config
-      - /media/redacerubuntu/files/docker/jellyfin/tvshows:/data/tvshows
-      - /media/redacerubuntu/files/docker/jellyfin/movies:/data/movies
+      # - /media/redacerubuntu/files/docker/jellyfin/config:/config
+      # - /media/redacerubuntu/files/docker/jellyfin/tvshows:/data/tvshows
+      # - /media/sf_tv:/data/tvshows
+      # - /media/redacerubuntu/files/docker/jellyfin/movies:/data/movies
+      # - /media/sf_yts:/data/movies
+      - /media/redacerubuntu/qfiles/developer/docker/jellyfin/config:/config
+      - /media/redacerubuntu/qfiles/downloads/qbittorrent/default/yts:/data/movies
+      - /media/redacerubuntu/qfiles/downloads/qbittorrent/default/tv:/data/tvshows
+      - /media/redacerubuntu/qfiles/downloads/qbittorrent/default/nyaa:/data/nyaa
+      - /media/redacerubuntu/qfiles/downloads/qbittorrent/default/cartoons:/data/cartoons
+      - /media/redacerubuntu/qfiles/downloads/qbittorrent/default/zombies:/data/zombies
+      # - /media/redacerubuntu/files1/downloads/manga/asurascans:/data/asurascans
+      # - /media/redacerubuntu/files1/docker/calibre/books:/data/books
     ports:
       - 5080:8096
       - 8920:8920 #optional
