@@ -20,13 +20,15 @@ services:
       - /media/redacerubuntu/qfiles/downloads/qbittorrent/default/nyaa:/data/nyaa
       - /media/redacerubuntu/qfiles/downloads/qbittorrent/default/cartoons:/data/cartoons
       - /media/redacerubuntu/qfiles/downloads/qbittorrent/default/zombies:/data/zombies
+      - /media/redacerubuntu/qfiles/downloads/qbittorrent/default/kids:/data/kids
+      - /media/redacerubuntu/qfiles/downloads/qbittorrent/default/series:/data/series
       # - /media/redacerubuntu/files1/downloads/manga/asurascans:/data/asurascans
       # - /media/redacerubuntu/files1/docker/calibre/books:/data/books
     ports:
       - 5080:8096
-      - 8920:8920 #optional
-      - 7359:7359/udp #optional
-      - 1900:1900/udp #optional
+      # - 8920:8920 #optional
+      # - 7359:7359/udp #optional
+      # - 1900:1900/udp #optional
     restart: unless-stopped
     networks:
     - shared-net

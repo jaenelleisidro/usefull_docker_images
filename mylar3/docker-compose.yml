@@ -1,0 +1,16 @@
+version: "2.1"
+services:
+  mylar3:
+    image: lscr.io/linuxserver/mylar3:latest
+    container_name: mylar3
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+    volumes:
+      - /media/redacerubuntu/qfiles/developer/docker/mylar3/config:/config
+      - /media/redacerubuntu/qfiles/developer/docker/mylar3/comics:/comics
+      - /media/redacerubuntu/qfiles/developer/docker/mylar3/downloads:/downloads
+    ports:
+      - 5100:8090
+    restart: unless-stopped
