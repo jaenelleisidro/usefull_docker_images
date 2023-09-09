@@ -1,0 +1,15 @@
+version: "2.1"
+services:
+  nextcloud:
+    image: lscr.io/linuxserver/nextcloud:latest
+    container_name: nextcloud
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+    volumes:
+      - /media/redacerubuntu/qfiles/developer/docker/nextcloud/config:/config
+      - /media/redacerubuntu/qfiles/developer/docker/nextcloud/data:/data
+    ports:
+      - 443:443
+    restart: unless-stopped
