@@ -1,7 +1,9 @@
 const { Kafka } = require('kafkajs')
+
 const kafka = new Kafka({
   clientId: 'my-app',
-  brokers: ['localhost:9093']
+  brokers: ['winddoctor.tplinkdns.com:9093']
+//   brokers: ['localhost:9093']
 })
 
 const start=async ()=>{

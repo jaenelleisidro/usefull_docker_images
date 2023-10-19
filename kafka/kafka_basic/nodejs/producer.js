@@ -1,6 +1,9 @@
 const express = require('express');
 const app = express();
 
+// const brokers=['localhost:9093'];
+const brokers=['winddoctor.tplinkdns.com:9093'];
+
 
 app.use(express.urlencoded({ extended: false }));
 
@@ -8,7 +11,7 @@ const { Kafka } = require('kafkajs')
 const kafka = new Kafka({
   // clientId: 'my-app',
   clientId: 'user',
-  brokers: ['localhost:9093']
+  brokers
 })
 
 app.get('/',async (req, res) => {

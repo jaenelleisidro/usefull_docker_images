@@ -22,6 +22,7 @@ services:
       - /media/redacerubuntu/qfiles/downloads/qbittorrent/default/zombies:/data/zombies
       - /media/redacerubuntu/qfiles/downloads/qbittorrent/default/kids:/data/kids
       - /media/redacerubuntu/qfiles/downloads/qbittorrent/default/series:/data/series
+      - /media/redacerubuntu/qfiles/downloads/qbittorrent/default/ufc:/data/ufc
       # - /media/redacerubuntu/files1/downloads/manga/asurascans:/data/asurascans
       # - /media/redacerubuntu/files1/docker/calibre/books:/data/books
     ports:
