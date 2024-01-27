@@ -120,16 +120,20 @@ function generateTorrentXML({movies}){
 
 
 module.exports=async function start(){
-    const movies=await getAllMovies({q:'zombie'})
-    const xml2=await generateTorrentXML({movies});
-    await writeFile('torrents.xml', xml2);
 
-    let text='';
-    for (let i = 0; i < movies.length; i++) {
-        const {url} = movies[i];
-        text=text+url+'\n\r';
+    for(i=2024;i>=1900;i--){
+        const q=''+i;
+        const movies=await getAllMovies({q})
+        const xml2=await generateTorrentXML({movies});
+        await writeFile('torrents_'+q+'.xml', xml2);
+
+        let text='';
+        for (let i = 0; i < movies.length; i++) {
+            const {url} = movies[i];
+            text=text+url+'\n\r';
+        }
+        await writeFile('torrents_'+q+'.txt', text); 
     }
-    await writeFile('torrents.txt', text); 
 
 }
 

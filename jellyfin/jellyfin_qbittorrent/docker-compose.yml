@@ -1,0 +1,50 @@
+version: "2.1"
+services:
+  qbittorrent:
+    container_name: qbittorrent
+    image: lscr.io/linuxserver/qbittorrent:latest
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+      - WEBUI_PORT=5040
+    volumes:
+      - ${QBITTORRENT_CONFIG}:/config
+      - ${QBITTORRENT_DOWNLOADS}:/downloads
+      - ${QBITTORRENT_DOWNLOADS_OTHERS}:/downloads/others
+      - ${QBITTORRENT_DOWNLOADS_DEFAULT}:/downloads/default
+      - ${QBITTORRENT_DOWNLOADS_INCOMPLETE}:/downloads/incomplete
+      - ${QBITTORRENT_DOWNLOADS_TORRENT}:/downloads/torrent
+      - ${QBITTORRENT_DOWNLOADS_TORRENT_FINISHED}:/downloads/torrent_finished
+      - ${QBITTORRENT_DOWNLOADS_TORRENT_INI}:/downloads/torrent_ini
+      - ${QBITTORRENT_DOWNLOADS_MOVIES_ALL}:/videos/movies/all
+      - ${QBITTORRENT_DOWNLOADS_MOVIES_KIDS}:/videos/movies/kids
+    ports:
+      - 5040:5040
+      - 5041:6881
+      - 5042:6881/udp
+    restart: unless-stopped
+  jellyfin:
+    container_name: jellyfin
+    image: lscr.io/linuxserver/jellyfin:latest
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+      - JELLYFIN_PublishedServerUrl=192.168.0.5 #optional
+    volumes:
+      - ${JELLYFIN_CONFIG}:/config
+      - ${QBITTORRENT_DOWNLOADS_MOVIES_ALL}:/videos/movies/all
+      - ${QBITTORRENT_DOWNLOADS_MOVIES_KIDS}:/videos/movies/kids
+    ports:
+      - 5080:8096
+      # - 8920:8920 #optional
+      # - 7359:7359/udp #optional
+      # - 1900:1900/udp #optional
+    restart: unless-stopped
+    networks:
+    - shared-net
+networks:
+  shared-net:
+    external: true
+#docker network create shared-net
