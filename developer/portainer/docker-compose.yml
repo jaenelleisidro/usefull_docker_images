@@ -1,0 +1,18 @@
+services:
+  portainer:
+    image: portainer/portainer-ce:latest
+    container_name: portainer
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+      - AUTO_UPDATE=true #optional
+      - RUN_OPTS= #optional
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock 
+      - ${PORTAINER_DATA}:/data
+    ports:
+      - 8000:8000
+      - 9443:9443
+      - 9000:9000
+    restart: unless-stopped
