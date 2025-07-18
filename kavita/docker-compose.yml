@@ -1,10 +1,10 @@
-version: '3.9'
 services:
     kavita:
         image: kizaing/kavita:latest
+        container_name: kavita
         volumes:
-            - /media/redacerubuntu/files1/downloads/manga/asurascans:/manga
-            - /media/redacerubuntu/qfiles/developer/docker/kavita/config:/kavita/config
+            - ${KAVITA_MANGA}:/manga
+            - ${KAVITA_CONFIG}:/kavita/config
         ports:
             - "5090:5000"
         restart: unless-stopped

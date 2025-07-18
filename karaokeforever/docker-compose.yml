@@ -1,16 +1,15 @@
-version: "2.1"
 services:
   karaokeforever:
     image: david510c/karaoke-forever:latest
     container_name: karaokeforever
     volumes:
-      - /media/redacerubuntu/files/docker/karaokeforever/cdgfiles:/cdgfiles
+      - ${KARAOKEFOREVER_CDGFILES}:/cdgfiles
     ports:
-      - 5020:80
+      - ${KARAOKEFOREVER_PORT80}:80
     restart: unless-stopped
-    networks:
-    - shared-net
-networks:
-  shared-net:
-    external: true
+    # networks:
+    # - shared-net
+# networks:
+#   shared-net:
+#     external: true
 #docker network create shared-net

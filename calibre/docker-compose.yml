@@ -1,7 +1,7 @@
-version: "2.1"
 services:
   calibre:
     image: lscr.io/linuxserver/calibre-web:latest
+    container_name: calibre
     environment:
       - PUID=1000
       - PGID=1000
@@ -9,14 +9,14 @@ services:
       - DOCKER_MODS=linuxserver/mods:universal-calibre #optional
       - OAUTHLIB_RELAX_TOKEN_SCOPE=1 #optional
     volumes:
-      - /media/redacerubuntu/files/docker/calibre/config:/config
-      - /media/redacerubuntu/files/docker/calibre/books:/books
+      - ${CALIBRE_CONFIG}/config:/config
+      - ${CALIBRE_DATA}/books:/books
     ports:
       - 5000:8083
     restart: unless-stopped
-    networks:
-    - shared-net
-networks:
-  shared-net:
-    external: true
+    # networks:
+    # - shared-net
+# networks:
+#   shared-net:
+#     external: true
 #docker network create shared-net

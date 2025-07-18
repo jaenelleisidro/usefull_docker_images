@@ -1,4 +1,3 @@
-version: "2.1"
 services:
   mylar3:
     image: lscr.io/linuxserver/mylar3:latest
@@ -8,9 +7,9 @@ services:
       - PGID=1000
       - TZ=Etc/UTC
     volumes:
-      - /media/redacerubuntu/qfiles/developer/docker/mylar3/config:/config
-      - /media/redacerubuntu/qfiles/developer/docker/mylar3/comics:/comics
-      - /media/redacerubuntu/qfiles/developer/docker/mylar3/downloads:/downloads
+      - ${MYLAR3_CONFIG}:/config
+      - ${KAVITA_COMICS}:/comics
+      - ${KAVITA_DOWNLODS}:/downloads
     ports:
       - 5100:8090
     restart: unless-stopped
