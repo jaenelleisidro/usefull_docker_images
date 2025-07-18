@@ -8,8 +8,8 @@ services:
       - PGID=1000
       - TZ=Etc/UTC
     volumes:
-      - /media/redacerubuntu/qfiles/developer/docker/nextcloud/config:/config
-      - /media/redacerubuntu/qfiles/developer/docker/nextcloud/data:/data
+      - ${NEXTCLOUD_CONFIG}/config:/config
+      - ${NEXTCLOUD_DATA}:/data
     ports:
       - 80:80
       - 443:443
