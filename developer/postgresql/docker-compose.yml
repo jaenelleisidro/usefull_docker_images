@@ -1,11 +1,9 @@
 # Use postgres/test101 as user/password credentials
-version: '3.1'
-
+#run "docker network create shared-net" to create network before running this compose file
 services:
-
   postgres:
-    image: postgres
-    restart: always
+    image: postgres:18.2
+    container_name: postgresql_container
     ports:
       - 5432:5432
     environment:
@@ -13,11 +11,11 @@ services:
       PGDATA: /var/lib/postgresql/data/pgdata
     volumes:
       - postgresql-datavolume:/var/lib/postgresql/data
+    restart: always
     networks:
     - shared-net
 networks:
   shared-net:
     external: true
-#docker network create shared-net
 volumes:
   postgresql-datavolume:
