@@ -1,0 +1,13 @@
+services:
+  tomcat:
+    image: tomcat:10.1-jdk17-temurin
+    container_name: tomcat_server
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./webapps:/usr/local/tomcat/webapps
+      - ./logs:/usr/local/tomcat/logs
+    environment:
+      - JPDA_ADDRESS=*:8000
+      - JPDA_TRANSPORT=dt_socket
+    restart: unless-stopped

@@ -1,0 +1,748 @@
+{
+  "name": "Simple Application Form workflow with score",
+  "nodes": [
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=job description:\n\"{{ $('Get a document').item.json.content }}\"\n\napplicant:\n\"{{ $('Extract from File').item.json.text }}\"\n\non the scale of 1 to 100, how well did the applicant fit the requirement",
+        "options": {
+          "systemMessage": "=\nYou are an expert technical recruiter.\n\nthe output should follow the json format below\n{\"scale\":0,\"remarks\":\"not fit at all\"}"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        880,
+        0
+      ],
+      "id": "561e3f8c-9f28-4f39-95eb-8560d37ba62c",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": "llama-3.1-8b-instant",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        848,
+        192
+      ],
+      "id": "ec85b2c1-6be8-4418-a2d4-c15909f62df1",
+      "name": "Groq Chat Model",
+      "credentials": {
+        "groqApi": {
+          "id": "RUixZE3wkMFgLkCb",
+          "name": "Groq account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "inputDataFieldName": "resume",
+        "name": "={{ $json.email.replace(\"@\",\"_\") }}.{{ $json.resume.filename.split('.').at(-1) }}",
+        "driveId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "My Drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "1mODnsjvca4W0krblQX1Qmax9rN1jZiQJ",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        96,
+        176
+      ],
+      "id": "06eaf0b3-5472-4735-b19a-4174f4e647bd",
+      "name": "Upload file",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "IQZPCXbhBl74j9bK",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1WXj4-Ym23UWnIcbK8EDsOUfaJD-td4hIea_5bNoMbw4",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1WXj4-Ym23UWnIcbK8EDsOUfaJD-td4hIea_5bNoMbw4/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "scale": "={{ $json.scale }}",
+            "remarks": "={{ $json.remarks }}",
+            "email": "={{ $('Form').item.json.Email }}",
+            "position": "={{ $('Form').item.json.Position }}",
+            "resume": "={{ $('Upload file').item.json.webViewLink }}",
+            "id": "={{ $('Form').item.json.Email }}:{{ $('Form').item.json.Position }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "position",
+              "displayName": "position",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "scale",
+              "displayName": "scale",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "remarks",
+              "displayName": "remarks",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "resume",
+              "displayName": "resume",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1392,
+        16
+      ],
+      "id": "326d3770-e04c-40ca-8d5b-dc2b556edb30",
+      "name": "Append or update row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "n6k5EQNSmPee5U6e",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "pdf",
+        "binaryPropertyName": "resume",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1.1,
+      "position": [
+        272,
+        48
+      ],
+      "id": "2c6c0dbc-e767-4f47-9c81-487f30f950c0",
+      "name": "Extract from File"
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "const input = $json.output;\n\n\nconst jsonString = input.match(/\\{[\\s\\S]*?\\}/)[0];\nconst json=JSON.parse(jsonString)\n\n\n//finds the json\n\n//console.log(result)\n\nreturn {json}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1216,
+        16
+      ],
+      "id": "007e1bd9-db9b-4190-9d00-788f113c604c",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "operation": "share",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $json.id }}",
+          "mode": "id"
+        },
+        "permissionsUi": {
+          "permissionsValues": {
+            "role": "reader",
+            "type": "anyone"
+          }
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        384,
+        224
+      ],
+      "id": "d4c82065-06d7-4318-8d52-1012802db28a",
+      "name": "Share file",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "IQZPCXbhBl74j9bK",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "documentURL": "={{ $json.selected_position_googlesheet.id }}"
+      },
+      "type": "n8n-nodes-base.googleDocs",
+      "typeVersion": 2,
+      "position": [
+        1392,
+        -272
+      ],
+      "id": "0b85ecc1-02b4-446a-ace5-a973125466c4",
+      "name": "Get a document",
+      "credentials": {
+        "googleDocsOAuth2Api": {
+          "id": "WP04qPTdjKKDKF8T",
+          "name": "Google Docs account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "fileFolder",
+        "returnAll": true,
+        "filter": {
+          "folderId": {
+            "__rl": true,
+            "value": "1A1I_1i1FvDL2x47L04OmjaP0vL8nidhs",
+            "mode": "id"
+          },
+          "whatToSearch": "files"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        144,
+        -416
+      ],
+      "id": "442ac17f-6463-46e9-a639-86f05eca9a2d",
+      "name": "Search files and folders",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "IQZPCXbhBl74j9bK",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "formTitle": "Upload Your Resume",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Resume",
+              "fieldType": "file",
+              "fieldName": "resume",
+              "multipleFiles": false,
+              "acceptFileTypes": ".pdf",
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.6,
+      "position": [
+        -80,
+        -272
+      ],
+      "id": "f2c5665d-7659-4ad0-a20e-237e200ded2a",
+      "name": "On form submission1",
+      "webhookId": "cb2a7ac4-19d2-4278-b9b5-c4e26483baba"
+    },
+    {
+      "parameters": {
+        "operation": "pdf",
+        "binaryPropertyName": "resume",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1.1,
+      "position": [
+        144,
+        -272
+      ],
+      "id": "26853295-3e13-4bb6-a2c1-064095c659f4",
+      "name": "Extract from File1"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=from the information below\n\"{{ $json.text }}\"\n\nextract the email, firstname, lastname, mobile number\n\nuse the json format below as output\n{\n  \"firstname\":\"dennis\",\n\"lastname\":\"santos\",\n\"email\":\"dennis@gmail.com\",\n\"mobile_number\":\"+639502700745\"\n}\n",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        336,
+        -256
+      ],
+      "id": "0f3da538-9ca5-4f11-9712-0c3ad53012ac",
+      "name": "AI Agent1"
+    },
+    {
+      "parameters": {
+        "model": "llama-3.1-8b-instant",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        352,
+        -96
+      ],
+      "id": "8d3b9eb9-20f4-4f6f-86c6-16c04d741539",
+      "name": "Groq Chat Model1",
+      "credentials": {
+        "groqApi": {
+          "id": "RUixZE3wkMFgLkCb",
+          "name": "Groq account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "const input = $json.output;\n\n\nconst jsonString = input.match(/\\{[\\s\\S]*?\\}/)[0];\nconst json=JSON.parse(jsonString)\n\n\n//finds the json\n\n//console.log(result)\n\nreturn {json}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        624,
+        -288
+      ],
+      "id": "8a13f6ea-44e1-49cc-b376-8ff5dbe4abde",
+      "name": "Code in JavaScript1"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "numberInputs": 4,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        880,
+        -320
+      ],
+      "id": "a7408915-19d8-459a-b32b-a2395b81a275",
+      "name": "Merge1"
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        480,
+        -432
+      ],
+      "id": "197ed565-4c72-4fba-816b-78554e2099f1",
+      "name": "Aggregate"
+    },
+    {
+      "parameters": {
+        "defineForm": "json",
+        "jsonOutput": "=[\n  {\n    \"fieldLabel\": \"First Name\",\n    \"placeholder\": \"enter your first name\",\n    \"requiredField\": true,\n    \"defaultValue\":\" {{ $json.firstname }}\"\n  },\n  {\n    \"fieldLabel\": \"Last Name\",\n    \"placeholder\": \"enter your last name\",\n    \"requiredField\": true,\n    \"defaultValue\":\" {{ $json.lastname }}\"\n  },\n  {\n    \"fieldLabel\": \"Email\",\n    \"fieldType\": \"email\",\n    \"requiredField\": true,\n    \"defaultValue\":\" {{ $json.email }}\"\n  },\n  {\n    \"fieldLabel\": \"Mobile Number\",\n    \"placeholder\": \"enter your mobile number\",\n    \"requiredField\": true,\n    \"defaultValue\":\" {{ $json.mobile_number }}\"\n  },\n  {\n    \"fieldLabel\": \"Position\",\n    \"fieldType\": \"dropdown\",\n    \"fieldOptions\": {\n      \"values\": [\n{{ $json.data.map(item => '{ \"option\": \"' + item.name + '\"}').join(',\\n') }}\n]\n    },\n    \"requiredField\": true\n  }\n]\n",
+        "options": {
+          "formTitle": "=Thank you, we received your resume",
+          "formDescription": "Kindly confirm if the information below is correct"
+        }
+      },
+      "type": "n8n-nodes-base.form",
+      "typeVersion": 2.5,
+      "position": [
+        1040,
+        -288
+      ],
+      "id": "fd9021cf-0aee-4b71-a96e-457acb9d1f18",
+      "name": "Form",
+      "webhookId": "768ca533-5706-4c1c-80a2-5255b5b2dc05"
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "const position = $json.Position\n\nconst selected_position_googlesheet=$('Aggregate').item.json.data.find(item=>item.name===position)\n\nreturn {selected_position_googlesheet};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1200,
+        -272
+      ],
+      "id": "4d95d268-b99b-40b2-a708-24ae37046239",
+      "name": "Code in JavaScript2"
+    },
+    {
+      "parameters": {
+        "sendTo": "jaenelleisidro@yahoo.com",
+        "subject": "=new applicant for {{ $json.position }}",
+        "message": "={{ $json.position }}\nEmail : {{ $json.email }}<br/>\nScale : {{ $json.scale }}<br/>\nRemarks: {{ $json.remarks }}<br/>\nResume : {{ $json.resume }}<br/>",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        1744,
+        -96
+      ],
+      "id": "e9227230-c35c-4dfe-9df3-c89c1c5191e2",
+      "name": "Send a message",
+      "webhookId": "7d4fc542-614f-448b-bb69-06076b94d9ef",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "z2KCwqh0l09roTJs",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "f425ae38-0d0c-43a7-bf81-6e8d9b0073ac",
+              "leftValue": "={{ $('Append or update row in sheet').item.json.scale }}",
+              "rightValue": 70,
+              "operator": {
+                "type": "number",
+                "operation": "gte"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        1552,
+        16
+      ],
+      "id": "47cd02d6-bfa2-4e68-9466-4c45df925dbb",
+      "name": "If"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Groq Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload file": {
+      "main": [
+        [
+          {
+            "node": "Share file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from File": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Append or update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Share file": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 3
+          }
+        ]
+      ]
+    },
+    "Get a document": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "On form submission1": {
+      "main": [
+        [
+          {
+            "node": "Extract from File1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Search files and folders",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Upload file",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Extract from File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from File1": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Groq Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent1": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript1": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Search files and folders": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge1": {
+      "main": [
+        [
+          {
+            "node": "Form",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Form": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript2": {
+      "main": [
+        [
+          {
+            "node": "Get a document",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append or update row in sheet": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message": {
+      "main": [
+        []
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "af645f8a-6573-4474-9554-3c428a2e6c3e",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "1e4e91ebd9488ec5d174e89c21cbed9ff82792c3167a6d2ceddcff0e6ef5f1b2"
+  },
+  "nodeGroups": [],
+  "id": "WZRzWUSsJlDddZrd",
+  "tags": []
+}
