@@ -1,0 +1,12 @@
+services:
+  spring-boot-app:
+    build:
+      context: .
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./target/:/target/
+    environment:
+      - PORT=8080
+volumes:
+  spring-boot-app:
