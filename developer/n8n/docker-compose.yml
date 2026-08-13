@@ -4,7 +4,8 @@ volumes:
 
 services:
   postgres:
-    image: postgres:16
+    container_name: n8n-postgres
+    image: postgres:${POSTGRES_VERSION}
     restart: always
     environment:
       - POSTGRES_USER
@@ -22,6 +23,7 @@ services:
       retries: 10
 
   n8n:
+    container_name: n8n-n8n
     image: docker.n8n.io/n8nio/n8n:${N8N_VERSION}
     restart: always
     environment:
@@ -34,17 +36,20 @@ services:
       - N8N_RUNNERS_MODE=external
       - N8N_RUNNERS_AUTH_TOKEN=${RUNNERS_AUTH_TOKEN}
       - N8N_RUNNERS_BROKER_LISTEN_ADDRESS=0.0.0.0
+      - N8N_ENCRYPTION_KEY=${N8N_ENCRYPTION_KEY}
     ports:
       - 5678:5678
     links:
       - postgres
     volumes:
-      - n8n_storage:/home/node/.n8n
+      - ./data/.n8n:/home/node/.n8n
+      - ./data/n8n_export:/home/node/n8n_export
     depends_on:
       postgres:
         condition: service_healthy
 
   n8n-runner:
+    container_name: n8n-runner
     image: n8nio/runners:${N8N_VERSION}
     restart: always
     environment:
