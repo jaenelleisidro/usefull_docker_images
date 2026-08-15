@@ -1,7 +1,7 @@
 services:
   portainer:
-    image: portainer/portainer-ce:latest
-    container_name: portainer
+    image: portainer/portainer-ce:${PORTAINER_VERSION}
+    container_name: portainer-web
     environment:
       - PUID=1000
       - PGID=1000
@@ -12,7 +12,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock 
       - ${PORTAINER_DATA}:/data
     ports:
-      - 8000:8000
-      - 9443:9443
-      - 9000:9000
+      - ${PORTAINER_PORT_8000}:8000
+      - ${PORTAINER_PORT_9443}:9443
+      - ${PORTAINER_PORT_9000}:9000
     restart: unless-stopped

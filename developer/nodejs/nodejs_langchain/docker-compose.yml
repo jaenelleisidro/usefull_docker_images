@@ -1,9 +1,9 @@
 services:
   ollama:
-    image: ollama/ollama:latest
-    container_name: ollama
+    image: ollama/ollama:${OLLAMA_VERSION}
+    container_name: ollama-app
     ports:
-      - "11434:11434"
+      - ${OLLAMA_PORT_11434}:11434
     volumes:
       - ./data/ollama/data:/root/.ollama
 
@@ -15,10 +15,10 @@ services:
   #   volumes:
   #     - ./data/chromadb/chroma:/chroma/chroma
   qdrant-vector-db:
-    image: qdrant/qdrant:latest # Official Qdrant Docker Image
-    container_name: qdrant
+    image: qdrant/qdrant:${QDRANT_VERSION} # Official Qdrant Docker Image
+    container_name: qdrant-vector-db
     ports:
-      - "6333:6333" # API Endpoint for Vector Queries (QDRANT_API_KEY optional)
+      - ${QDRANT_PORT_6333}:6333 # API Endpoint for Vector Queries (QDRANT_API_KEY optional)
     environment:
       - PARENT_DIR=/qdrant/storage
     volumes:

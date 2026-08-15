@@ -1,0 +1,19 @@
+services:
+  gitlab:
+    container_name: gitlab-web
+    image: 'gitlab/gitlab-ce:${GITLAB_VERSION}'
+    restart: always
+    hostname: 'localhost:80'
+    environment:
+      GITLAB_OMNIBUS_CONFIG: |
+        external_url 'http://localhost:80'
+        # Add any additional omnibus configuration here
+    ports:
+      - '80:80'
+      - '443:443'
+      - '22:22'
+    volumes:
+      - '$GITLAB_HOME/config:/etc/gitlab'
+      - '$GITLAB_HOME/logs:/var/log/gitlab'
+      - '$GITLAB_HOME/data:/var/opt/gitlab'
+    shm_size: '256m'

@@ -49,7 +49,8 @@ services:
         condition: service_healthy
 
   n8n-runner:
-    container_name: n8n-runner
+    deploy:
+      replicas: 3
     image: n8nio/runners:${N8N_VERSION}
     restart: always
     environment:
