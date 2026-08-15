@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  localstack:
+    container_name: localstack_main
+    image: localstack/localstack:latest
+    ports:
+      - "127.0.0.1:4566:4566"            # LocalStack Edge Proxy (All AWS services)
+      - "127.0.0.1:4510-4559:4510-4559"  # Ports for external service execution (e.g., Lambda)
+    environment:
+      # Define which AWS services to enable (Leave blank or remove to enable all)
+      - SERVICES=s3,ec2,lambda,dynamodb,sns,sqs
+      # Set your default local region
+      - AWS_DEFAULT_REGION=us-east-1
+      # Allows LocalStack to spin up runtime containers for Lambda functions
+      - LAMBDA_EXECUTOR=docker
+      # Enables persistent data storage across container restarts
+      - PERSISTENCE=1
+      # Level of logging output (debug, info, warn, error)
+      - DEBUG=1
+    volumes:
+      # Stores LocalStack state data on your local host machine
+      - "./localstack_data:/var/lib/localstack"
+      # Allows LocalStack to spawn sibling Docker containers for Lambda
+      - "/var/run/docker.sock:/var/run/docker.sock"

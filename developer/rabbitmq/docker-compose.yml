@@ -1,7 +1,7 @@
 services:
   rabbitmq:
     image: rabbitmq:${RABBITMQ_VERSION}
-    container_name: rabbitmq-app
+    container_name: rabbitmq-web
     restart: always
     ports:
       - ${RABBITMQ_PORT_5672}:5672
