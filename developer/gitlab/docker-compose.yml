@@ -1,0 +1,9 @@
+services:
+  gitlab-server:
+    image: 'gitlab/gitlab-ce:${GITLAB_VERSION}'
+    container_name: gitlab-web
+    environment:
+      GITLAB_ROOT_EMAIL: "${GITLAB_ROOT_EMAIL}"
+      GITLAB_ROOT_PASSWORD: "${GITLAB_ROOT_PASSWORD}"
+    ports:
+      - ${GITLAB_PORT_80}:80
