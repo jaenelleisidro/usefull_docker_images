@@ -1,0 +1,17 @@
+# "org" ensures this Service is used with the correct Serverless Framework Access Key.
+org: jaenelleisidro
+# serverless.yml 
+service: my-service
+provider:   
+  name: aws   
+  runtime: nodejs22.x
+functions:
+  hello:
+    handler: handler.hello
+    events:
+      - http:
+          path: hello/get
+          method: get
+# adding these two lines
+plugins:
+  - serverless-offline
