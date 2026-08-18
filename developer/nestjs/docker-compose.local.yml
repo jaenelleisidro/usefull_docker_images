@@ -1,0 +1,14 @@
+services:
+  postgres-local:
+    container_name: postgres-local
+    image: postgres:${POSTGRES_VERSION}
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - postgres-local-data:/var/lib/postgresql/data
+    ports:
+      - "${POSTGRES_PORT_5432}:5432"
+volumes:
+  postgres-local-data:

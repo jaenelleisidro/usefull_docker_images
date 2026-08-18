@@ -7,7 +7,7 @@ async function bootstrap() {
     // Enable graceful shutdown hooks
   app.enableShutdownHooks();
   
-  await app.listen(process.env.PORT ?? 80);
+  await app.listen(process.env.NODE_PORT_80 ?? 80);
   
 }
 bootstrap();

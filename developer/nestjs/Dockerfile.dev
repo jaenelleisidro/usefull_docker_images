@@ -13,4 +13,5 @@ COPY . .
 EXPOSE 80
 
 # Run the NestJS dev server with file watching and the debug port
-CMD ["npm", "run", "start:debug"]
+# CMD ["npm", "run", "start:debug"]
+CMD ["sh", "./Dockerfile.prod.start.sh"]
