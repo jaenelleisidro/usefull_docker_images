@@ -1,0 +1,16 @@
+
+ARG NODE_VERSION=20-alpine
+
+FROM node:${NODE_VERSION}
+
+WORKDIR /app
+
+COPY package.json package-lock.json ./
+RUN npm ci
+
+COPY . .
+
+EXPOSE 80
+
+# Run the NestJS dev server with file watching and the debug port
+CMD ["npm", "run", "start:debug"]

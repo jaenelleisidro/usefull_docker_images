@@ -1,0 +1,50 @@
+ARG NODE_VERSION=20-alpine
+
+# Stage 1: Install dependencies
+FROM node:${NODE_VERSION} AS deps
+
+WORKDIR /app
+
+# Copy package files
+COPY package.json package-lock.json ./
+
+# Install all dependencies (including dev deps for building)
+RUN npm ci
+
+
+# Stage 2: Build the application
+FROM node:${NODE_VERSION} AS build
+
+WORKDIR /app
+
+# Copy dependencies from the previous stage
+COPY --from=deps /app/node_modules ./node_modules
+COPY . .
+
+# Compile TypeScript
+RUN npm run build
+
+# Prune dev dependencies after build
+RUN npm prune --omit=dev
+
+
+# Stage 3: Production image
+FROM node:${NODE_VERSION} AS production
+
+WORKDIR /app
+
+# Create a non-root user
+RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+
+# Copy only what is needed for production
+COPY --from=build /app/dist ./dist
+COPY --from=build /app/node_modules ./node_modules
+COPY --from=build /app/package.json ./
+
+# Switch to non-root user
+USER appuser
+
+EXPOSE 80
+
+# Start the NestJS application
+CMD ["node", "dist/main.js"]

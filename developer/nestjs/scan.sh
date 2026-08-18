@@ -1,0 +1,1 @@
+docker scout cves my-nest-app:latest
