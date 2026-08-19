@@ -1,0 +1,34 @@
+services:
+  redis:
+    image: redis:${REDIS_VERSION}
+    container_name: redis-app
+    restart: unless-stopped
+    ports:
+      - "${REDIS_PORT_6379}:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes --requirepass MySecurePassword123
+
+  redis-insight:
+    image: redis/redisinsight:${RI_VERSION}
+    container_name: redis-web
+    restart: unless-stopped
+    ports:
+      - "${RI_PORT_5540}:5540"
+    volumes:
+      - redis_insight_data:/data
+    environment:
+      # Automatically accept the End User License Agreement (EULA) screen
+      - RI_ACCEPT_TERMS_AND_CONDITIONS=${RI_ACCEPT_TERMS_AND_CONDITIONS}
+      
+      # Automatically provision and map the Redis connection
+      - RI_REDIS_HOST=${RI_REDIS_HOST}
+      - RI_REDIS_PORT=${RI_REDIS_PORT_6379}
+      - RI_REDIS_PASSWORD=${RI_REDIS_PASSWORD}
+      - RI_REDIS_ALIAS=${RI_REDIS_ALIAS}
+    depends_on:
+      - redis
+
+volumes:
+  redis_data:
+  redis_insight_data:
