@@ -1,4 +1,3 @@
-import { ChatGroq } from "@langchain/groq";
 import {  ChatOllama } from "@langchain/ollama";
 import { tool } from "@langchain/core/tools";
 import { TavilySearch } from "@langchain/tavily";
@@ -7,7 +6,7 @@ import {
   MessagesPlaceholder, // <-- New Import
 } from "@langchain/core/prompts";
 import { HumanMessage } from "@langchain/core/messages";
-import { createReactAgent } from "@langchain/langgraph/prebuilt"; // <-- The magic import!
+import { createAgent } from "langchain";
 import { z } from "zod";
 
 // const {GROQ_MODEL,GROQ_API_KEY} = process.env;
@@ -43,7 +42,7 @@ const tavilySearchTool = new TavilySearch({ maxResults: 3 });
 const tools = [addNumbersTool, tavilySearchTool];
 
 // We still bind the tools to the model to make it "tool-aware"
-const modelWithTools = model.bindTools(tools);
+// const modelWithTools = model.bindTools(tools);
 
 // NEW: A more advanced prompt template for conversational agents
 const prompt = ChatPromptTemplate.fromMessages([
@@ -52,9 +51,9 @@ const prompt = ChatPromptTemplate.fromMessages([
 ]);
 
 // The star of the show: create a pre-built ReAct agent
-const agent = createReactAgent({
-  llm: modelWithTools,
-  tools: tools,
+const agent = createAgent({
+  model,
+  tools,
   // Note: The prompt is optional and will be inferred from the LLM if not provided.
   // We include it here for clarity.
 });
