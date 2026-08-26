@@ -9,4 +9,5 @@ docker exec -it ollama-app ollama pull medgemma:4b
 docker exec -it ollama-app ollama pull medgemma:27b
 docker exec -it ollama-app ollama pull thewindmom/llama3-med42-8b:latest
 docker exec -it ollama-app ollama pull qwen2.5-coder:14b
+docker exec -it ollama-app ollama pull qwen3-coder:30b
 docker exec -it ollama-app ollama pull opencoder:8b
