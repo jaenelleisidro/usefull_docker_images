@@ -1,6 +1,5 @@
 services:
   ministack:
-    build: .
     image: ministackorg/ministack:latest
     container_name: ministack
     ports:

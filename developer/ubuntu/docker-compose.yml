@@ -1,0 +1,7 @@
+services:
+  ubuntu-ssh:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "2222:22"
