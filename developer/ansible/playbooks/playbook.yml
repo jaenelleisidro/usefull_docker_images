@@ -1,21 +1,47 @@
 ---
-- name: Configure Web Servers
-  hosts: webservers
-  become: yes  # Runs tasks as root/sudo
+- name: Install Nginx and serve static HTML
+  hosts: all
+  become: true
+  vars:
+    web_dir: /var/www/html
+
   tasks:
-
-    - name: Update package cache (Ubuntu/Debian)
+    - name: Update apt cache and install Nginx (Ubuntu/Debian)
       apt:
-        update_cache: yes
-      when: ansible_os_family == "Debian"
-
-    - name: Ensure Nginx is installed
-      package:
         name: nginx
         state: present
+        update_cache: true
+      when: ansible_os_family == "Debian"
 
-    - name: Ensure Nginx service is started and enabled
+    - name: Install Nginx (RHEL/CentOS/Rocky)
+      dnf:
+        name: nginx
+        state: present
+      when: ansible_os_family == "RedHat"
+
+    - name: Create web root directory
+      file:
+        path: "{{ web_dir }}"
+        state: directory
+        mode: '0755'
+
+    - name: Deploy static HTML index page
+      copy:
+        dest: "{{ web_dir }}/index.html"
+        content: |
+          <!DOCTYPE html>
+          <html>
+          <head>
+              <title>Welcome to Nginx</title>
+          </head>
+          <body>
+              <h1>Success! Nginx is working via Ansible.</h1>
+          </body>
+          </html>
+        mode: '0644'
+
+    - name: Ensure Nginx is started and enabled
       service:
         name: nginx
         state: started
-        enabled: yes
+        enabled: true

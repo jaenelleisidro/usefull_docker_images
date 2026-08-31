@@ -1,0 +1,1 @@
+ ansible -i playbooks/inventory.ini all -m ping
