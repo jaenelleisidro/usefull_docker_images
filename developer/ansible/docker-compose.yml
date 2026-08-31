@@ -1,0 +1,14 @@
+services:
+  ansible:
+    build: .
+    container_name: ansible_control_node
+    volumes:
+      # Mount your local playbooks directory into the container
+      - ./data/ansible/playbook:/ansible
+      # Mount your local SSH keys to allow Ansible to connect to target hosts
+      # - ~/.ssh:/root/.ssh:ro
+      - ./data/ansible/.ssh:/root/.ssh:ro
+    environment:
+      - ANSIBLE_HOST_KEY_CHECKING=False
+    stdin_open: true
+    tty: true
