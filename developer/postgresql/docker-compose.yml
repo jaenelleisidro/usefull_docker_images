@@ -12,10 +12,10 @@ services:
     volumes:
       - postgresql-datavolume:/var/lib/postgresql/data
     restart: always
-    networks:
-    - shared-net
-networks:
-  shared-net:
-    external: true
+#     networks:
+#     - shared-net
+# networks:
+#   shared-net:
+#     external: true
 volumes:
   postgresql-datavolume:

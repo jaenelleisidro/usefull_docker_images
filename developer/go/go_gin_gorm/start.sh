@@ -1,0 +1,2 @@
+# https://medium.com/@rashid14713524/a-simple-todo-crud-api-using-golang-gin-gorm-and-postgresql-981a9bde0c4d
+go run cmd/main.go
